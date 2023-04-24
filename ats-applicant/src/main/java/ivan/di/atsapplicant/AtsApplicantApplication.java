@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class AtsApplicantApplication {
 
     public static void main(String[] args) {
+        System.setProperty("spring.config.name", "applicant");
         SpringApplication.run(AtsApplicantApplication.class, args);
     }
 
