@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:21017/ats-applicant
+
+test:
+  mockDatabase: true
