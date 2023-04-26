@@ -8,14 +8,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 @RequiredArgsConstructor
 public class ApplicantService {
-    public static final String APPLICANT_SERVICE_URL = "http://localhost:1102";
+    public static final String APPLICANT_SERVICE_URL = "http://ats-applicant";
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public void saveApplicant(ApplicantDto applicantDto) {
 
-
-        webClient.post()
+        webClientBuilder.build().post()
             .uri(APPLICANT_SERVICE_URL+"/applicant");
             //.body(ApplicantDto.class, applicantDto)
             //.block();
