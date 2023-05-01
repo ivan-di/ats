@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ivan.di.atsapplicant.model.dto.ApplicantDto;
 import ivan.di.atsapplicant.repository.ApplicantRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @AutoConfigureMockMvc
 class AtsApplicantApplicationTests extends AbstractApplicantTest {
-
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
 
@@ -33,21 +31,17 @@ class AtsApplicantApplicationTests extends AbstractApplicantTest {
     private ApplicantRepository applicantRepository;
     @Autowired
     private MockMvc mockMvc;
-    private static ObjectMapper objectMapper;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();;
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
         dynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
 
-    @BeforeAll
-    public static void setup() {
-        objectMapper = new ObjectMapper();
-    }
-
     @Test
     public void success_createApplicant() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/applicant")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(APPLICANT_URI)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(getApplicantDto())))
             .andExpect(status().isCreated())
@@ -61,7 +55,7 @@ class AtsApplicantApplicationTests extends AbstractApplicantTest {
     @Test
     public void success_findApplicant() throws Exception {
         ApplicantDto applicantDto = getApplicantDto();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/applicant")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(APPLICANT_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(applicantDto)))
             .andExpect(status().isCreated())
@@ -72,14 +66,14 @@ class AtsApplicantApplicationTests extends AbstractApplicantTest {
         String createdId = createdApplicantDto.getId();
         Assertions.assertNotNull(createdId);
 
-        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/applicant/"+createdId)
+        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get(APPLICANT_URI + "/" + createdId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(getApplicantDto())))
             .andExpect(status().isOk())
             .andReturn();
 
         // convert response body to DTO
-        ApplicantDto foundApplicantDto = objectMapper.readValue(result.getResponse().getContentAsString(), ApplicantDto.class);
+        ApplicantDto foundApplicantDto = objectMapper.readValue(getResult.getResponse().getContentAsString(), ApplicantDto.class);
         Assertions.assertEquals(applicantDto.getFirstName(), foundApplicantDto.getFirstName());
     }
 }

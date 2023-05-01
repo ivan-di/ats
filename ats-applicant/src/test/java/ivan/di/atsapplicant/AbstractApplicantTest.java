@@ -6,6 +6,9 @@ import ivan.di.atsapplicant.model.Address;
 import ivan.di.atsapplicant.model.Applicant;
 
 public abstract class AbstractApplicantTest {
+
+    public static final String APPLICANT_URI = "/api/applicant";
+
     protected ApplicantDto getApplicantDto() {
         return new ApplicantDto(null, "Ivan", "Diachenko", 22, "email@ivan.di", "773355", generateAddressDto());
     }
