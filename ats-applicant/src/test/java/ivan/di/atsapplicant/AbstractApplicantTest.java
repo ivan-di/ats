@@ -4,13 +4,24 @@ import ivan.di.atsapplicant.model.dto.AddressDto;
 import ivan.di.atsapplicant.model.dto.ApplicantDto;
 import ivan.di.atsapplicant.model.Address;
 import ivan.di.atsapplicant.model.Applicant;
+import ivan.di.atsapplicant.model.dto.ResumeDto;
+
+import java.util.List;
 
 public abstract class AbstractApplicantTest {
 
     public static final String APPLICANT_URI = "/api/applicant";
 
     protected ApplicantDto getApplicantDto() {
-        return new ApplicantDto(null, "Ivan", "Diachenko", 22, "email@ivan.di", "773355", generateAddressDto());
+        return ApplicantDto.builder()
+          .firstName("Ivan")
+          .lastName("Diachenko")
+          .age(22)
+          .email("email@ivan.di")
+          .phoneNumber("773355")
+            .resume(generateResumeDto())
+          .address(generateAddressDto())
+          .build();
     }
 
     protected Applicant getApplicant() {
@@ -41,5 +52,14 @@ public abstract class AbstractApplicantTest {
         addressDto.setZipCode("12345");
 
         return addressDto;
+    }
+
+    protected ResumeDto generateResumeDto() {
+        return ResumeDto.builder()
+            .bio("I am a Java and Spring Developer")
+            .educationLevel("BACHELORS")
+            .experienceMonths(21)
+            .skills(List.of("Java", "Spring", "Git", "Kafka", "MongoDB", "PostgreSQL"))
+            .build();
     }
 }

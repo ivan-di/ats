@@ -1,4 +1,4 @@
-package ivan.di.model.dto;
+package ivan.di.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

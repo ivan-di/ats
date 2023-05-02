@@ -1,22 +1,32 @@
 package ivan.di.service;
 
-import ivan.di.model.dto.ApplicantDto;
+import ivan.di.dto.ApplicantDto;
+import ivan.di.feignclients.ApplicantFeignClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
 public class ApplicantService {
-    public static final String APPLICANT_SERVICE_URL = "http://ats-applicant";
+//    public static final String APPLICANT_SERVICE_URL = "http://ats-applicant";
 
-    private final WebClient.Builder webClientBuilder;
+//    private final WebClient.Builder webClientBuilder;
 
-    public void saveApplicant(ApplicantDto applicantDto) {
+    private final ApplicantFeignClient applicantClient;
 
-        webClientBuilder.build().post()
-            .uri(APPLICANT_SERVICE_URL+"/applicant");
-            //.body(ApplicantDto.class, applicantDto)
-            //.block();
+    @Async
+    public ApplicantDto saveApplicant(ApplicantDto applicantDto) {
+        ResponseEntity<ApplicantDto> response = applicantClient.createApplicant(applicantDto);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        throw new RuntimeException("Error creating applicant with status uuid " + applicantDto.getUuid());
+
+//        webClientBuilder.build().post()
+//            .uri(APPLICANT_SERVICE_URL+"/applicant");
+//            //.body(ApplicantDto.class, applicantDto)
+//            //.block();
     }
 }

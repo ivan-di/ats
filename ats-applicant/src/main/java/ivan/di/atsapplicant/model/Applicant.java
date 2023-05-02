@@ -18,11 +18,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Applicant {
     @Id
     private String id;
+    private String uuid;
     private String firstName;
     private String lastName;
     private Integer age;
     private String email;
     private String phoneNumber;
     private Address address;
+    private Resume resume;
 }
 

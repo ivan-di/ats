@@ -5,18 +5,12 @@ import ivan.di.atsapplicant.model.dto.ApplicantDto;
 import ivan.di.atsapplicant.controller.mappers.ApplicantMapper;
 import ivan.di.atsapplicant.model.Address;
 import ivan.di.atsapplicant.model.Applicant;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApplicantMapperTest extends AbstractApplicantTest{
     ApplicantMapper mapper = new ApplicantMapper();
-
-    @BeforeEach
-    public void setup() {
-//        this.mapper = new ModelMapper();
-    }
 
     @Test
     public void mapApplicantDtoToApplicant() {
