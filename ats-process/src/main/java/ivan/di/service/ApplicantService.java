@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ApplicantService {
-//    public static final String APPLICANT_SERVICE_URL = "http://ats-applicant";
-
-//    private final WebClient.Builder webClientBuilder;
 
     private final ApplicantFeignClient applicantClient;
 
@@ -23,10 +20,5 @@ public class ApplicantService {
             return response.getBody();
         }
         throw new RuntimeException("Error creating applicant with status uuid " + applicantDto.getUuid());
-
-//        webClientBuilder.build().post()
-//            .uri(APPLICANT_SERVICE_URL+"/applicant");
-//            //.body(ApplicantDto.class, applicantDto)
-//            //.block();
     }
 }

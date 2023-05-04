@@ -1,0 +1,26 @@
+{
+  "firstName": "Ivan",
+  "lastName": "Diachenko",
+  "age": 22,
+  "email": "email@ivan.di",
+  "phoneNumber": "773355",
+  "resume": {
+    "bio": "I am a Java and Spring Developer",
+    "educationLevel": "BACHELORS",
+    "experienceMonths": 21,
+    "skills": [
+      "Java",
+      "Spring",
+      "Git",
+      "Kafka",
+      "MongoDB",
+      "PostgreSQL"
+    ]
+  },
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "CA",
+    "zipCode": "12345"
+  }
+}

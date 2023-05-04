@@ -1,45 +1,59 @@
 package ivan.di.service;
 
+import ivan.di.dto.ApplicantDto;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+@Service
+@Slf4j
 public class ApplicantReviewingProcessService {
 
-    private final ProcessEngine processEngine;
     private final RuntimeService runtimeService;
-    private final Logger logger = LoggerFactory.getLogger(ApplicantReviewingProcessService.class);
 
-    public ApplicantReviewingProcessService() {
+    private final ApplicantService applicantService;
+
+    public ApplicantReviewingProcessService(ApplicantService applicantService) {
+        this.applicantService = applicantService;
+
         // Create a new instance of the Camunda process engine
-        processEngine = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
-                .buildProcessEngine();
+        ProcessEngine processEngine = SpringProcessEngineConfiguration
+            .createStandaloneProcessEngineConfiguration()
+            .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP)
+            .setJdbcUrl("jdbc:h2:mem:camunda-h2-database;DB_CLOSE_DELAY=1000")
+            .setJobExecutorActivate(true)
+            .buildProcessEngine();
 
         // Get the runtime service to start and manage process instances
         runtimeService = processEngine.getRuntimeService();
     }
 
-//    public String startApplicantReviewingProcess(Applicant) {
-//        // Define the process instance variables
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("applicantName", applicantName);
-//        variables.put("applicantEmail", applicantEmail);
-//        variables.put("jobTitle", jobTitle);
-//
-//        // Start the applicant reviewing process with the defined variables
-//        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("applicantReviewingProcess", variables);
-//        String processInstanceId = processInstance.getId();
-//        logger.info("Started applicant reviewing process with process instance ID: {}", processInstanceId);
-//
-//        // Return the process instance ID as a string
-//        return processInstanceId;
-//    }
+    public String startApplicantReviewingProcess(ApplicantDto applicantDto) {
+        String uuid = UUID.randomUUID().toString();
+        applicantDto.setUuid(uuid);
+
+        applicantService.saveApplicant(applicantDto);
+
+        // Define the process instance variables
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("applicantId", uuid);
+
+        // Start the applicant reviewing process with the defined variables
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("applicant-tracking", variables);
+        String processInstanceId = processInstance.getId();
+        log.info("Started applicant reviewing process for applicant with UUID: {}, and process instance ID: {}", uuid, processInstanceId);
+
+        // Return the process instance ID as a string
+        return processInstanceId;
+    }
 //
 //    public void evaluateApplicant(String processInstanceId, boolean isQualified) {
 //        // Define the process instance variables
