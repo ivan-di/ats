@@ -27,7 +27,7 @@ public class ApplicantReviewingProcessService {
         // Create a new instance of the Camunda process engine
         ProcessEngine processEngine = SpringProcessEngineConfiguration
             .createStandaloneProcessEngineConfiguration()
-            .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP)
+            .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
             .setJdbcUrl("jdbc:h2:mem:camunda-h2-database;DB_CLOSE_DELAY=1000")
             .setJobExecutorActivate(true)
             .buildProcessEngine();
