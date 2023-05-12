@@ -1,4 +1,4 @@
-package ivan.di.atsapplicant;
+package ivan.di.atsgateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,11 +6,11 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class AtsApplicantApplication {
+public class AtsGatewayApplication {
 
     public static void main(String[] args) {
-        System.setProperty("spring.config.name", "applicant");
-        SpringApplication.run(AtsApplicantApplication.class, args);
+        System.setProperty("spring.config.name", "gateway");
+        SpringApplication.run(AtsGatewayApplication.class, args);
     }
 
 }
