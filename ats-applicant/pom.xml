@@ -70,8 +70,8 @@
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <version>4.0.0</version>
+            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+            <version>3.0.4</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,44 @@
+server:
+  port: 9999
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1120/eureka
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud:
+      gateway: TRACE
+      gateway.root.RouteDefinitionLocator: INFO
+
+spring:
+  application:
+    name: ATS-gateway
+
+    cloud:
+    gateway:
+      routes[0]: #Applicant Service Route
+        id: ats-applicant
+        uri: lb://ats-applicant #lb - for load balancing
+        predicates[0]: Path=/api/applicant
+      routes[1]: #Process Service Route
+        id: ats-process
+        uri: lb://ats-process #lb - for load balancing
+        predicates[0]: Path=/api
+      routes[2]: #Discovery Service Route
+        id: ats-discovery
+        uri: http://localhost:1120
+        predicates[0]: Path=/discovery
+        filters[0]: SetPath=/
+      routes[3]: #Discovery Service static resources Route
+        id: ats-discovery
+        uri: http://localhost:1120
+        predicates[0]: Path=/discovery
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/spring-boot-microservices-realm

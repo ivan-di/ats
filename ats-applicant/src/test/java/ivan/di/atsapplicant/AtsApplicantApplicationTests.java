@@ -1,6 +1,5 @@
 package ivan.di.atsapplicant;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ivan.di.atsapplicant.model.dto.ApplicantDto;
 import ivan.di.atsapplicant.repository.ApplicantRepository;
 import org.junit.jupiter.api.Assertions;
@@ -29,10 +28,8 @@ class AtsApplicantApplicationTests extends AbstractApplicantTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
-    @Autowired
-    private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();;
+    private MockMvc mockMvc;
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
